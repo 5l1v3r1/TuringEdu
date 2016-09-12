@@ -32,7 +32,7 @@ namespace WindowsFormsApplication1
         int SYS = 0;
         int stepbstep = 0;
         bool allowkeymouse=false;
-
+        int stepsCount=0;
         
 
 
@@ -470,7 +470,7 @@ namespace WindowsFormsApplication1
                     else { MessageBox.Show("Данный символ \"" + cl.smb + "\" не содержится в алфавите"); this.dataTable[col, row].Value = ""; }
                 }
 
-                else { MessageBox.Show("Отсутствуют управляющие символы < > . "); this.dataTable[col, row].Value = ""; }
+                else { MessageBox.Show("Отсутствуют   управляющие символы < > . "); this.dataTable[col, row].Value = ""; }
 
 
                 /*for (int i = 0; i < this.dataTable[col, row].Value.ToString().Length; i++)
@@ -549,6 +549,11 @@ namespace WindowsFormsApplication1
             RunStepRigth();
         }
 
+        private void updateStepsCount()
+        {
+            labelCount.Text = stepsCount.ToString();
+        }
+
         private void RunStepRigth()
         {
             try
@@ -559,8 +564,11 @@ namespace WindowsFormsApplication1
                     if (check > 399) { MessageBox.Show("ЛЕНТА ЗАКОНЧИЛАСЬ"); return; }
                     this.dataMachine.Columns[i + 15].HeaderText = (check + 1).ToString();
                     this.dataMachine[i + 15, 0].Value = TapeTur[check + shift + 1];
+                   
                 }
                 CurIndex = Convert.ToInt32(this.dataMachine.Columns[15].HeaderText) + shift;
+                stepsCount++;
+                updateStepsCount();
                 // label1.Text = CurIndex.ToString() + " " + TapeTur[CurIndex];
             }
             catch (Exception ee)
@@ -587,8 +595,11 @@ namespace WindowsFormsApplication1
                     if (check < -399) { MessageBox.Show("ЛЕНТА ЗАКОНЧИЛАСЬ"); return; }
                     this.dataMachine.Columns[i + 15].HeaderText = (check - 1).ToString();
                     this.dataMachine[i + 15, 0].Value = TapeTur[check + shift - 1];
+                    
                 }
                 CurIndex = Convert.ToInt32(this.dataMachine.Columns[15].HeaderText) + shift;
+                stepsCount++;
+                updateStepsCount();
             }
             catch (Exception ee)
             {
@@ -917,12 +928,14 @@ namespace WindowsFormsApplication1
                 toolStripButton3.Enabled = true;
                 CurState = 1;
 
-                MessageBox.Show("Выполнение остановлено");
+                MessageBox.Show("Выполнение остановлено. Выполнено шагов: "+stepsCount.ToString());
                 dataMachine.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.LightBlue;
                 dataMachine.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.White;
                 dataTable.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.LightBlue;
                 dataTable.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black;
                 stepbstep = 0;
+                stepsCount = 0;
+                updateStepsCount();
             }
             catch (Exception ee)
             {
