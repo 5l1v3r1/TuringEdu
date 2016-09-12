@@ -1,3 +1,5 @@
 # TuringEdu
 
-##Visualiation of Turing machine for educational purposes
+###Visualization of Turing machine for educational purposes
+
+
